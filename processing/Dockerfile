@@ -1,4 +1,4 @@
-FROM python:3.8-buster
+FROM python:3.12.10-slim-bookworm
 
 COPY requirements.txt /app/
 WORKDIR /app
