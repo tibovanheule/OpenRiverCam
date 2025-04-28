@@ -12,7 +12,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship, backref
 from models.base import Base
 from flask_security import UserMixin, RoleMixin
-
+import uuid
 
 class RolesUsers(Base):
     __tablename__ = "roles_users"
@@ -27,7 +27,10 @@ class Role(Base, RoleMixin):
     name = Column(String(80), unique=True)
     description = Column(String(255))
 
-
+def generate_fs_uniquifier():
+    # Generate a unique string. Here we use uuid4, you can use any method that suits your needs.
+    return str(uuid.uuid4())
+    
 class User(Base, UserMixin):
     __tablename__ = "user"
     id = Column(Integer, primary_key=True)
@@ -44,3 +47,4 @@ class User(Base, UserMixin):
     roles = relationship(
         "Role", secondary="roles_users", backref=backref("users", lazy="dynamic")
     )
+    fs_uniquifier = Column(String(64), unique=True, nullable=False, default=generate_fs_uniquifier)
