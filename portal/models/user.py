@@ -48,3 +48,9 @@ class User(Base, UserMixin):
         "Role", secondary="roles_users", backref=backref("users", lazy="dynamic")
     )
     fs_uniquifier = Column(String(64), unique=True, nullable=False, default=generate_fs_uniquifier)
+
+    def __init__(self, **kwargs):
+        super(User, self).__init__(**kwargs)
+        # Ensure fs_uniquifier is set on instantiation
+        if not self.fs_uniquifier:
+            self.fs_uniquifier = generate_fs_uniquifier()
