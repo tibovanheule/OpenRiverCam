@@ -6,6 +6,7 @@ from models import db
 from models.user import User, Role
 from controllers import camera_type_api, processing_api, visualize_api, bathymetry_api, ratingcurve_api, project_api
 from views import admin
+from flask_migrate import Migrate
 
 # Create flask app
 app = Flask(__name__, template_folder="templates")
@@ -25,6 +26,7 @@ app.config["SECURITY_PASSWORD_SALT"] = os.getenv("SECURITY_PASSWORD_SALT")
 # Setup Flask-Security
 user_datastore = SQLAlchemySessionUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
+migrate = Migrate(app, db)
 
 # Alternative routes
 @app.route("/")
